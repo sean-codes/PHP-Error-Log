@@ -19,7 +19,7 @@ function check(reset){
         }
     };
 
-    xhttp.open("GET", "check.php?" + (reset ? 'reset=1' : ''), true);
+    xhttp.open("GET", "ajax.php?function=check&" + (reset ? 'reset=1' : ''), true);
     xhttp.send();
 }
 
@@ -38,13 +38,13 @@ function appendNewLog(error){
 
 function testError(){
     var newTestError = new XMLHttpRequest();
-    newTestError.open("GET", "error.php", true);
+    newTestError.open("GET", "ajax.php?function=test", true);
     newTestError.send();
 }
 
 function clearLog(){
     var xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "clear.php", true);
+    xhttp.open("GET", "ajax.php?function=clear", true);
     xhttp.send();
 
     document.getElementById('errors').innerHTML = "";

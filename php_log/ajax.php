@@ -1,4 +1,5 @@
 <?php
+session_id('phpErrorLog');
 session_start();
 $_SESSION['filename'] = "/var/log/apache2/error.log";
 
@@ -41,13 +42,14 @@ function check(){
 
     do {
 	    clearstatcache();
-        //Check lines
+
         $log = file($_SESSION['filename']);
         if(count($log) > 0){
             $_SESSION['lines'] = count($log);  
-        }
+        } 
         session_write_close();
 	    usleep(10000); 
+        session_id('phpErrorLog');
         session_start();
     }
     while($_SESSION['lines'] == $old_lines && abs($poll_time - time()) < 2);
@@ -67,7 +69,7 @@ function check(){
         //Now the error and location
         $break = explode(',', $break[4]);
         $errors[$cnt]['error'] = trim($break[0]);
-        $errors[$cnt]['location'] = trim(str_replace('referer:', '', $break[1]));
+        $errors[$cnt]['location'] = (count($break) > 1) ? trim(str_replace('referer:', '', $break[1])) : '';
     }
     
     echo json_encode($errors);
